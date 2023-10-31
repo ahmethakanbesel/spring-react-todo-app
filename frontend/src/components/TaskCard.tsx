@@ -10,13 +10,14 @@ interface TaskCardProps {
 }
 
 const TaskCard: React.FC<TaskCardProps> = ({ task, onUpdate, onDelete }) => {
+    const apiUrl = import.meta.env.VITE_API_URL;
     const [isEditing, setIsEditing] = useState(false);
     const [editedDescription, setEditedDescription] = useState(task.description);
 
     const handleToggleStatus = async () => {
         try {
             // Perform the API request to mark the task as completed
-            const response = await fetch(`http://localhost:8080/api/tasks/${task.id}`, {
+            const response = await fetch(apiUrl + `/api/tasks/${task.id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -45,7 +46,7 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, onUpdate, onDelete }) => {
         if (isEditing) {
             try {
                 const updatedTask = { ...task, description: editedDescription };
-                const response = await fetch(`http://localhost:8080/api/tasks/${task.id}`, {
+                const response = await fetch(apiUrl + `/api/tasks/${task.id}`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
@@ -75,7 +76,7 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, onUpdate, onDelete }) => {
     const handleDeleteTask = async () => {
         try {
             // Perform the API request to delete the task
-            const response = await fetch(`http://localhost:8080/api/tasks/${task.id}`, {
+            const response = await fetch(apiUrl + `/api/tasks/${task.id}`, {
                 method: 'DELETE',
             });
 

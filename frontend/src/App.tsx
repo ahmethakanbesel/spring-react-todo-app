@@ -7,13 +7,14 @@ import TaskList from './components/TaskList'
 import { Task } from './model/Task';
 
 const App = () => {
+  const apiUrl = import.meta.env.VITE_API_URL;
   const [tasks, setTasks] = useState<Task[]>([]);
   const [filter, setFilter] = useState('all');
 
   // Function to fetch tasks from the API
   const fetchTasks = async () => {
     try {
-      const response = await fetch('http://localhost:8080/api/tasks');
+      const response = await fetch(apiUrl + '/api/tasks');
       if (response.status === 200) {
         const data = await response.json();
         setTasks(data.data); // Update the tasks with the API response
@@ -27,7 +28,7 @@ const App = () => {
 
   const batchDelete = async (completed: string) => {
     try {
-      const response = await fetch(`http://localhost:8080/api/tasks/?completed=` + completed, {
+      const response = await fetch(apiUrl + `/api/tasks/?completed=` + completed, {
         method: 'DELETE',
       });
       if (response.status === 200) {

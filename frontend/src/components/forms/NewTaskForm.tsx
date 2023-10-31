@@ -8,6 +8,7 @@ interface NewTaskFormProps {
 }
 
 const NewTaskForm: React.FC<NewTaskFormProps> = ({ onSave }) => {
+    const apiUrl = import.meta.env.VITE_API_URL;
     const [taskDescription, setTaskDescription] = useState('');
 
     const handleSaveClick = async () => {
@@ -19,7 +20,7 @@ const NewTaskForm: React.FC<NewTaskFormProps> = ({ onSave }) => {
             };
 
             // Make a POST request to your API
-            const response = await fetch('http://localhost:8080/api/tasks', {
+            const response = await fetch(apiUrl + '/api/tasks', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
