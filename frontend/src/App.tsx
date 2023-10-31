@@ -25,6 +25,21 @@ const App = () => {
     }
   };
 
+  const batchDelete = async (completed: string) => {
+    try {
+      const response = await fetch(`http://localhost:8080/api/tasks/?completed=` + completed, {
+        method: 'DELETE',
+      });
+      if (response.status === 200) {
+        fetchTasks();
+      } else {
+        console.error('Failed to batch delete tasks');
+      }
+    } catch (error) {
+      console.error('Error deleting tasks:', error);
+    }
+  };
+
   // Load tasks from the API when the component mounts (on page load)
   useEffect(() => {
     fetchTasks();
@@ -109,7 +124,7 @@ const App = () => {
             <HStack spacing={0} justifyContent='space-between'>
               <Button
                 leftIcon={<DeleteIcon />}
-                onClick={() => { }}
+                onClick={() => batchDelete('true')}
                 colorScheme='red'
                 flex='1'
                 mr={2}
@@ -118,7 +133,7 @@ const App = () => {
               </Button>
               <Button
                 leftIcon={<DeleteIcon />}
-                onClick={() => { }}
+                onClick={() => batchDelete('all')}
                 colorScheme='red'
                 flex='1'
                 mr={2}
