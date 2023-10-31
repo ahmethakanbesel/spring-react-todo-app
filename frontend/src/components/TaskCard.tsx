@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Card, CardBody, Text, IconButton, Flex, HStack, Input } from '@chakra-ui/react';
-import { EditIcon, DeleteIcon, CheckIcon, CheckCircleIcon } from '@chakra-ui/icons';
+import { EditIcon, DeleteIcon, CheckIcon, LockIcon } from '@chakra-ui/icons';
 import { Task } from '../model/Task';
 
 interface TaskCardProps {
@@ -130,7 +130,7 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, onUpdate, onDelete }) => {
                             size="sm"
                             colorScheme={isEditing ? 'teal' : 'yellow'}
                             aria-label={isEditing ? 'Save the task' : 'Edit the task'}
-                            icon={isEditing ? <CheckCircleIcon /> : <EditIcon />}
+                            icon={isEditing ? <LockIcon /> : <EditIcon />}
                             onClick={handleEditTask}
                         />
                         <IconButton
