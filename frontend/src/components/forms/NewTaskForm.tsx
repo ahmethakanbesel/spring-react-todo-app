@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Input, Button } from '@chakra-ui/react';
+import { Box, Input, Button, FormControl } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
 import { Task } from '../../model/Task';
 
@@ -13,6 +13,17 @@ const NewTaskForm: React.FC<NewTaskFormProps> = ({ onSave }) => {
 
     const handleSaveClick = async () => {
         try {
+            // Client-side validation
+            if (taskDescription.length < 2) {
+                alert('Task description must be at least 2 characters long.');
+                return;
+            }
+
+            if (taskDescription.length > 260) {
+                alert('Task description cannot exceed 260 characters.');
+                return;
+            }
+
             // Create a new task object to send to the API
             const newTask = {
                 description: taskDescription,
@@ -48,11 +59,15 @@ const NewTaskForm: React.FC<NewTaskFormProps> = ({ onSave }) => {
 
     return (
         <Box display="flow" alignItems="center">
-            <Input
-                placeholder="Write short but descriptive task description here..."
-                value={taskDescription}
-                onChange={(e) => setTaskDescription(e.target.value)}
-            />
+            <FormControl isRequired>
+                <Input
+                    placeholder="Write short but descriptive task description here..."
+                    value={taskDescription}
+                    onChange={(e) => setTaskDescription(e.target.value)}
+                    minLength={2}
+                    maxLength={260}
+                />
+            </FormControl>
             <Button
                 leftIcon={<AddIcon />}
                 colorScheme='teal'
@@ -60,6 +75,7 @@ const NewTaskForm: React.FC<NewTaskFormProps> = ({ onSave }) => {
                 onClick={handleSaveClick}
                 mt={2}
                 width='100%'
+                type='submit'
             >
                 Add
             </Button>
