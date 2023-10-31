@@ -1,35 +1,137 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useState, useEffect } from 'react';
 import './App.css'
+import { Container, StackDivider, VStack, Box, Text, HStack, Button } from '@chakra-ui/react'
+import { DeleteIcon } from '@chakra-ui/icons'
+import NewTaskForm from './components/forms/NewTaskForm'
+import TaskList from './components/TaskList'
+import { Task } from './model/Task';
 
-function App() {
-  const [count, setCount] = useState(0)
+const App = () => {
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  const [filter, setFilter] = useState('all');
+
+  // Function to fetch tasks from the API
+  const fetchTasks = async () => {
+    try {
+      const response = await fetch('http://localhost:8080/api/tasks');
+      if (response.status === 200) {
+        const data = await response.json();
+        setTasks(data.data); // Update the tasks with the API response
+      } else {
+        console.error('Failed to fetch tasks');
+      }
+    } catch (error) {
+      console.error('Error fetching tasks:', error);
+    }
+  };
+
+  // Load tasks from the API when the component mounts (on page load)
+  useEffect(() => {
+    fetchTasks();
+  }, []); // The empty dependency array ensures this effect runs once on component mount
+
+  const filteredTasks = filter === 'all'
+    ? tasks
+    : filter === 'completed'
+      ? tasks.filter(task => task.completed)
+      : tasks.filter(task => !task.completed);
+
+  const handleSave: (task: Task) => void = (task) => {
+    const newTask: Task = {
+      id: task.id,
+      description: task.description,
+      completed: task.completed,
+    };
+    setTasks([...tasks, newTask]);
+  };
+
+  const handleUpdate: (task: Task) => void = (task) => {
+    const updatedTasks = tasks.map((t) => {
+      if (t.id === task.id) {
+        return task;
+      }
+      return t;
+    });
+    setTasks(updatedTasks);
+  };
+
+  const handleDelete: (taskId: number) => void = (taskId) => {
+    const updatedTasks = tasks.filter((task) => task.id !== taskId);
+    setTasks(updatedTasks);
+  };
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <Container centerContent={true}>
+        <VStack
+          divider={<StackDivider borderColor='gray.200' />}
+          spacing={8}
+          align='stretch'
+          width='100%'
+        >
+          <Box textAlign='center'>
+            <Text fontSize='4xl'>TODO List</Text>
+          </Box>
+          <Box>
+            <NewTaskForm onSave={handleSave}></NewTaskForm>
+          </Box>
+          <Box>
+            <HStack spacing={0} justifyContent='space-between'>
+              <Button
+                onClick={() => setFilter('all')}
+                colorScheme={filter === 'all' ? 'blue' : 'gray'}
+                flex='1'
+                mr={2}
+              >
+                All Tasks ({tasks.length})
+              </Button>
+              <Button
+                onClick={() => setFilter('completed')}
+                colorScheme={filter === 'completed' ? 'green' : 'gray'}
+                flex='1'
+                mr={2}
+              >
+                Completed ({tasks.filter(task => task.completed).length})
+              </Button>
+              <Button
+                onClick={() => setFilter('pending')}
+                colorScheme={filter === 'pending' ? 'yellow' : 'gray'}
+                flex='1'
+              >
+                Pending ({tasks.filter(task => !task.completed).length})
+              </Button>
+            </HStack>
+          </Box>
+          <Box>
+            <TaskList tasks={filteredTasks} onUpdate={handleUpdate} onDelete={handleDelete} />
+          </Box>
+          <Box>
+            <HStack spacing={0} justifyContent='space-between'>
+              <Button
+                leftIcon={<DeleteIcon />}
+                onClick={() => { }}
+                colorScheme='red'
+                flex='1'
+                mr={2}
+              >
+                Delete completed
+              </Button>
+              <Button
+                leftIcon={<DeleteIcon />}
+                onClick={() => { }}
+                colorScheme='red'
+                flex='1'
+                mr={2}
+              >
+                Delete all
+              </Button>
+            </HStack>
+          </Box>
+        </VStack>
+      </Container>
     </>
-  )
-}
+  );
+};
 
-export default App
+export default App;
