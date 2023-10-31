@@ -1,38 +1,13 @@
-# syntax=docker/dockerfile:1.4
+FROM oven/bun:alpine AS builder
 
-FROM --platform=$BUILDPLATFORM node:lts AS development
+WORKDIR /app
+COPY package.json .
+COPY bun.lockb .
+RUN bun install
+COPY . .
 
-WORKDIR /code
-COPY package.json /code/package.json
-COPY package-lock.json /code/package-lock.json
+CMD [ "bun", "run", "build" ]
 
-RUN npm ci
-COPY . /code
+FROM nginx:alpine-slim
 
-ENV CI=true
-ENV PORT=3000
-
-CMD [ "npm", "run", "dev" ]
-
-FROM development AS dev-envs
-RUN <<EOF
-apt-get update
-apt-get install -y git
-EOF
-
-RUN <<EOF
-useradd -s /bin/bash -m vscode
-groupadd docker
-usermod -aG docker vscode
-EOF
-# install Docker tools (cli, buildx, compose)
-COPY --from=gloursdocker/docker / /
-CMD [ "npm", "run", "dev" ]
-
-FROM development AS build
-
-RUN ["npm", "run", "build"]
-
-FROM nginx:1.13-alpine
-
-COPY --from=build /code/build /usr/share/nginx/html
+COPY --from=builder /app/dist /usr/share/nginx/html
