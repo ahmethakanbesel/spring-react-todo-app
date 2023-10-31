@@ -11,8 +11,17 @@ services:
       - "5432:5432"
     volumes:
       - postgres-data:/var/lib/postgresql/data
+    restart: always
+    networks:
+      - spring-postgres
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready", "-d", "db_prod" ]
+      interval: 30s
+      timeout: 60s
+      retries: 5
+      start_period: 80s
 
-  app:
+  backend:
     build:
       context: .
       dockerfile: Dockerfile
@@ -21,11 +30,37 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
+    networks:
+        - react-spring
+        - spring-postgres
+    restart: always
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB}
       SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
       SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
 
+  frontend:
+    build:
+      context: frontend
+      target: development
+    ports:
+      - 3000:3000
+    volumes:
+      - ./frontend/src:/code/src
+      - /project/node_modules
+    networks:
+      - react-spring
+    depends_on:
+      - backend
+    expose:
+      - 3306
+      - 33060
+
 volumes:
-  postgres-data:
+  postgres-data: {}
+
+networks:
+  react-spring: {}
+  spring-postgres: {}
