@@ -100,4 +100,23 @@ public class TaskController {
         taskService.deleteTaskById(id);
         return new ResponseEntity<>("The task deleted successfully.", HttpStatus.OK);
     }
+
+    @Operation(
+            summary = "Delete tasks",
+            description = "Batch delete tasks with the given status"
+    )
+    @ApiResponse(
+            responseCode = "200",
+            description = "200 SUCCESS"
+    )
+    @DeleteMapping("/")
+    public ResponseEntity<String> deleteTasks(@RequestParam(value = "completed", required = true) String completed) {
+        if ("true".equals(completed) || "all".equals(completed)) {
+            taskService.deleteTasksByCompleted(true);
+        }
+        if ("false".equals(completed) || "all".equals(completed)) {
+            taskService.deleteTasksByCompleted(false);
+        }
+        return new ResponseEntity<>("The tasks deleted successfully.", HttpStatus.OK);
+    }
 }

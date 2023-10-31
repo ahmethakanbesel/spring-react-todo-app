@@ -80,6 +80,16 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    public void deleteTasksByCompleted(boolean completed) {
+        Pageable pageable = PageRequest.of(0, 1000); // You can adjust the page size as needed
+
+        Page<Task> tasksToDelete = taskRepository.findByCompleted(completed, pageable);
+        if (!tasksToDelete.isEmpty()) {
+            taskRepository.deleteInBatch(tasksToDelete);
+        }
+    }
+
+    @Override
     public TaskResponse getAllTasksByCompleted(boolean completed, int pageNo, int pageSize, String sortBy, String sortDir) {
         Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
                 : Sort.by(sortBy).descending();
