@@ -16,7 +16,7 @@ public class TaskDto {
             description = "Task description"
     )
     @NotEmpty
-    @Size(min = 2, message = "Task description must have 2 characters at least.")
+    @Size(min = 2, max = 260, message = "Task description must have 2 characters at least.")
     private String description;
 
     @Schema(
