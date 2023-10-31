@@ -8,7 +8,6 @@ import { Task } from './model/Task';
 
 const App = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
-  const [error, setError] = useState<string | null>(null);
   const [filter, setFilter] = useState('all');
 
   // Function to fetch tasks from the API
