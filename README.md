@@ -3,12 +3,12 @@
 ### Summary
 This is yet another to-do app. Like the other _-probably-_ millions of similar to-do apps on the Internet, this app can be used for keeping track of your tasks.
 Allows you to create tasks on its simple and clean interface. You can also mark the tasks as completed or delete them.
-This was a warm-up project for me to learn Spring Boot.
+This was a Spring Boot starter project for me.
 
 ### Özet
 Bu, bir başka yapılacaklar listesi uygulaması. İnternet'teki diğer _-muhtemelen-_ milyonlarca benzer yapılacaklar listesi uygulaması gibi bu uygulama da görevlerinizi takip etmek için kullanılabilir.
 Basit ve temiz arayüzü ile görevler oluşturmanıza izin verir. Görevleri tamamlandı olarak işaretleyebilir veya silebilirsiniz.
-Benim için Spring Boot'u öğrenmek için bir ısınma projesiydi.
+Benim için Spring Boot'a başlangıç projesiydi.
 
 
 ### Technologies
