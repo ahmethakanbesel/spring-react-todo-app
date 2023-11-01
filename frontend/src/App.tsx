@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import './App.css'
 import { Container, StackDivider, VStack, Box, Text, HStack, Button } from '@chakra-ui/react'
 import { DeleteIcon } from '@chakra-ui/icons'
 import NewTaskForm from './components/forms/NewTaskForm'
