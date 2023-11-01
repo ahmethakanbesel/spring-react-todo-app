@@ -44,19 +44,17 @@ services:
   frontend:
     build:
       context: frontend
-      target: development
+      dockerfile: Dockerfile
     ports:
-      - 3000:3000
-    volumes:
-      - ./frontend/src:/code/src
-      - /project/node_modules
+      - 3000:80
     networks:
       - react-spring
     depends_on:
       - backend
+    environment:
+      VITE_API_URL: http://localhost:8080
     expose:
-      - 3306
-      - 33060
+      - 80
 
 volumes:
   postgres-data: {}
