@@ -23,7 +23,7 @@ Benim için Spring Boot'u öğrenmek için bir ısınma projesiydi.
 - Docker
 
 ### Preview
-
+https://github.com/ahmethakanbesel/spring-react-todo-app/assets/6422460/c64cb0fc-52b6-4085-9bfc-62809e072ea3
 
 ### Running
 
