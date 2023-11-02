@@ -1,4 +1,4 @@
-package com.ahkn.springtodoapp.model;
+package com.ahkn.springtodoapp.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

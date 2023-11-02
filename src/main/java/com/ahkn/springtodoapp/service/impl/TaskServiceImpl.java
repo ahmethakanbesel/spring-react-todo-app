@@ -3,7 +3,7 @@ package com.ahkn.springtodoapp.service.impl;
 import com.ahkn.springtodoapp.dto.TaskDto;
 import com.ahkn.springtodoapp.dto.TaskResponse;
 import com.ahkn.springtodoapp.exception.ResourceNotFoundException;
-import com.ahkn.springtodoapp.model.Task;
+import com.ahkn.springtodoapp.entity.Task;
 import com.ahkn.springtodoapp.service.TaskService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
