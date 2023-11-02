@@ -3,7 +3,11 @@ package com.ahkn.springtodoapp.entity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import lombok.Getter;
 
+import java.util.Objects;
+
+@Getter
 @Entity
 public class Task implements Comparable<Task> {
     @Id
@@ -12,16 +16,8 @@ public class Task implements Comparable<Task> {
     private String description;
     private boolean completed;
 
-    public String getDescription() {
-        return description;
-    }
-
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public boolean isCompleted() {
-        return completed;
     }
 
     public void setCompleted(boolean completed) {
@@ -32,10 +28,6 @@ public class Task implements Comparable<Task> {
         this.id = id;
     }
 
-    public Long getId() {
-        return id;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -44,8 +36,8 @@ public class Task implements Comparable<Task> {
         Task that = (Task) o;
 
         if (completed != that.completed) return false;
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        if (description != null ? !description.equals(that.description) : that.description != null) return false;
+        if (!Objects.equals(id, that.id)) return false;
+        if (!Objects.equals(description, that.description)) return false;
 
         return true;
     }
