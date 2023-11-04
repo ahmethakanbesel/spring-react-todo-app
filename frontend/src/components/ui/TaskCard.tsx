@@ -104,6 +104,8 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, onUpdate, onDelete }) => {
                     <Text
                         style={{
                             textDecoration: task.completed ? 'line-through' : 'none',
+                            opacity: task.completed ? 0.5 : 1,
+                            fontWeight: 600,
                         }}
                     >
                         {isEditing ? (
